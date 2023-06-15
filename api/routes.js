@@ -2,11 +2,18 @@
 module.exports = function (app) {
     let accountsController = require('./controllers/AccountsController');
     let accountsServicesController = require('./controllers/AccountsServicesController');
+    let categoriesController = require('./controllers/CategoriesController');
+    let plantsCategoriesController = require('./controllers/PlantsCategoriesController');
+    let toolsCategoriesController = require('./controllers/ToolsCategoriesController');
+    let plantsController = require('./controllers/PlantsController');
+    let toolsController = require('./controllers/ToolsController');
+    let colorsController = require('./controllers/ColorsController');
 
     let hashPass = require('./controllers/testHashPass');
     app.route('/hash').get(hashPass.getAll);
 
     let { uploadFile } = require('./controllers/UploadFileController');
+    let { getFile } = require('./controllers/GetFileController');
 
     // Table Accounts
     app.route('/accounts')
@@ -32,7 +39,72 @@ module.exports = function (app) {
     app.route('/accounts_services/services/:serviceId')
         .get(accountsServicesController.getByServiceId);
 
+    // Table Categories
+    app.route('/categories')
+        .get(categoriesController.getAll)
+        .post(categoriesController.store);
+    app.route('/categories/active')
+        .get(categoriesController.getByStatus);
+    app.route('/categories/display')
+        .get(categoriesController.getDisplayCategories);
+    app.route('/categories/special')
+        .get(categoriesController.getSpecialCategories);
+    app.route('/categories/parent/:parentId')
+        .get(categoriesController.getByParentId);
+    app.route('/categories/:categoryId')
+        .get(categoriesController.detail)
+        .put(categoriesController.update)
+        .delete(categoriesController.delete);
 
+    // Table Colors
+    app.route('/colors/used_by_plants')
+        .get(colorsController.getUsedByPlants);
+    app.route('/colors/used_by_tools')
+        .get(colorsController.getUsedByTools);
+
+    // Table Plants_categories
+    app.route('/plants_categories/:categoryId')
+        .get(plantsCategoriesController.getByCategoriesId);
+
+    // Table Tools_categories
+    app.route('/tools_categories/:categoryId')
+        .get(toolsCategoriesController.getByCategoriesId);
+
+    // Table Plants
+    app.route('/plants')
+        .get(plantsController.getAll)
+        .post(plantsController.store);
+    app.route('/plants/active')
+        .get(plantsController.getByStatus);
+    app.route('/plants/search/:search')
+        .get(plantsController.search);
+    app.route('/plants/:plantSlug')
+        .get(plantsController.detail)
+        .put(plantsController.update)
+        .delete(plantsController.delete);
+
+    // Table Tools
+    app.route('/tools')
+        .get(toolsController.getAll)
+        .post(toolsController.store);
+    app.route('/tools/active')
+        .get(toolsController.getByStatus);
+    app.route('/tools/search/:search')
+        .get(toolsController.search);
+    app.route('/tools/:toolSlug')
+        .get(toolsController.detail)
+        .put(toolsController.update)
+        .delete(toolsController.delete);
+
+    // Get file
+    app.route('/images/:folderName/:fileName')
+        .get(getFile);
+
+
+    // app.get('/images', (req, res) => {
+    //     const imagePath = join(__dirname, '../', 'uploads', 'plants', 'simple1.jpg');
+    //     res.sendFile(imagePath);
+    // });
 
     // Upload file
     app.route('/uploadFile')

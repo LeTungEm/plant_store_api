@@ -19,6 +19,28 @@ module.exports = {
             res.json(response)
         })
     },
+    getByParentId: (req, res) => {
+        let parentId = req.params.parentId;
+        let sql = 'SELECT t2.category_id, t2.name,t2.slug,t2.image FROM categories as t1 INNER JOIN categories as t2 on t1.category_id = t2.parent_id WHERE t1.slug = ? and t2.status  = 1';
+        db.query(sql, [parentId], (err, response) => {
+            if (err) throw err
+            res.json(response)
+        })
+    },
+    getDisplayCategories: (req, res) => {
+        let sql = 'SELECT category_id, name, slug FROM `categories` where display = 1 and status = 1';
+        db.query(sql, (err, response) => {
+            if (err) throw errxa
+            res.json(response)
+        })
+    },
+    getSpecialCategories: (req, res) => {
+        let sql = 'SELECT category_id, name, slug, image FROM `categories` where special = 1 and status = 1';
+        db.query(sql, (err, response) => {
+            if (err) throw err
+            res.json(response)
+        })
+    },
     detail: (req, res) => {
         let categoryId = req.params.categoryId;
         let sql = 'SELECT * FROM `categories` WHERE category_id = ?';

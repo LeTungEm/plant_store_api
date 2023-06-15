@@ -12,9 +12,10 @@ const uploadFile = (req, res) => {
   form.parse(req, function(err, fields, files) {
     console.log('{err, fields, files} :>> ', {err, fields, files});
     const oldPath = files.file.filepath;
-    fs.rename(oldPath, join(newPath, files.file.originalFilename) , function (err) {
+    fs.rename(oldPath, join(newPath, files.file.originalFilename+'.jpg') , function (err) {
       if (err) throw err;
-      res.send('File uploaded and moved!');
+      res.json({message: 'ok'});
+      // res.send('File uploaded and moved!');
     });
   });
 };
