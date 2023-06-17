@@ -6,7 +6,7 @@ const db = require('../db')
 
 module.exports = {
     getAll: (req, res) => {
-        let sql = 'SELECT * FROM `categories`';
+        let sql = 'SELECT * FROM `categories` where categories.slug not in ("cay","chau")';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
@@ -19,10 +19,10 @@ module.exports = {
             res.json(response)
         })
     },
-    getByParentId: (req, res) => {
-        let parentId = req.params.parentId;
+    getByParentSlug: (req, res) => {
+        let parentSlug = req.params.parentSlug;
         let sql = 'SELECT t2.category_id, t2.name,t2.slug,t2.image FROM categories as t1 INNER JOIN categories as t2 on t1.category_id = t2.parent_id WHERE t1.slug = ? and t2.status  = 1';
-        db.query(sql, [parentId], (err, response) => {
+        db.query(sql, [parentSlug], (err, response) => {
             if (err) throw err
             res.json(response)
         })

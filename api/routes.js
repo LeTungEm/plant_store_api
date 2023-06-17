@@ -49,12 +49,12 @@ module.exports = function (app) {
         .get(categoriesController.getDisplayCategories);
     app.route('/categories/special')
         .get(categoriesController.getSpecialCategories);
-    app.route('/categories/parent/:parentId')
-        .get(categoriesController.getByParentId);
-    app.route('/categories/:categoryId')
-        .get(categoriesController.detail)
-        .put(categoriesController.update)
-        .delete(categoriesController.delete);
+    app.route('/categories/parent/:parentSlug')
+        .get(categoriesController.getByParentSlug);
+    // app.route('/categories/:categoryId')
+    //     .get(categoriesController.detail)
+    //     .put(categoriesController.update)
+    //     .delete(categoriesController.delete);
 
     // Table Colors
     app.route('/colors/used_by_plants')
@@ -63,8 +63,8 @@ module.exports = function (app) {
         .get(colorsController.getUsedByTools);
 
     // Table Plants_categories
-    app.route('/plants_categories/:categoryId')
-        .get(plantsCategoriesController.getByCategoriesId);
+    app.route('/plants_categories/:categorySlug')
+        .get(plantsCategoriesController.getByCategoriesSlug);
 
     // Table Tools_categories
     app.route('/tools_categories/:categoryId')
