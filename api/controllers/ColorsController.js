@@ -13,7 +13,7 @@ module.exports = {
         })
     },
     getUsedByPlants: (req, res) => {
-        let sql = 'SELECT DISTINCT color_id,`code`,`name` FROM `colors` INNER JOIN plant_set on colors.color_id = plant_set.tool_color_id WHERE code is NOT null';
+        let sql = 'SELECT DISTINCT color_id,`code`,`name` FROM `colors` INNER JOIN plant_set on colors.color_id = plant_set.tool_color_id WHERE code is NOT null and plant_set.plant_id != 1';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
