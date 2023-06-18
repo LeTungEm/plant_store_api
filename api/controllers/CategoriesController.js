@@ -35,7 +35,7 @@ module.exports = {
         })
     },
     getSpecialCategories: (req, res) => {
-        let sql = 'SELECT category_id, name, slug, image FROM `categories` where special = 1 and status = 1';
+        let sql = 'SELECT t2.slug as parent_slug, t1.category_id, t1.name, t1.slug, t1.image FROM `categories` as t1 inner join `categories` as t2 on t1.parent_id = t2.category_id where t1.special = 1 and t1.status = 1';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
