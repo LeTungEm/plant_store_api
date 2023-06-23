@@ -21,6 +21,10 @@ module.exports = function (app) {
         .post(accountsController.store);
     app.route('/accounts/active')
         .get(accountsController.getByStatus);
+    app.route('/accounts/isRemember')
+        .get(accountsController.isRemember);
+    app.route('/accounts/email/exists')
+        .post(accountsController.isEmailExists);
     app.route('/accounts/:accountId')
         .get(accountsController.detail)
         .put(accountsController.update)

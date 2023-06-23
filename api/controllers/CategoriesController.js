@@ -30,7 +30,7 @@ module.exports = {
     getDisplayCategories: (req, res) => {
         let sql = 'SELECT category_id, name, slug FROM `categories` where display = 1 and status = 1';
         db.query(sql, (err, response) => {
-            if (err) throw errxa
+            if (err) throw err
             res.json(response)
         })
     },
