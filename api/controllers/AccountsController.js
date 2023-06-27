@@ -48,7 +48,6 @@ module.exports = {
             if (response.length > 0) {
                 let infoLogin = response[0];
                 const isPasswordCorrect = verifyPassword(data.password, infoLogin.password, infoLogin.salt);
-                res.cookie('userEmail', data.email, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
                 res.json({ message: isPasswordCorrect, userId: infoLogin.account_id });
             } else {
                 res.json({ message: false });
@@ -56,20 +55,23 @@ module.exports = {
         })
     },
     detail: (req, res) => {
-        let accountId = req.params.accountId;
-        let sql = 'SELECT * FROM accounts WHERE account_id = ?';
-        db.query(sql, [accountId], (err, response) => {
+        let email = req.params.email;
+        let sql = 'SELECT name, email, address, phone, gender, birthday FROM accounts WHERE email = ?';
+        db.query(sql, [email], (err, response) => {
             if (err) throw err
             res.json(response[0])
         })
     },
     update: (req, res) => {
         let data = req.body;
-        let accountId = req.params.accountId;
-        let sql = 'UPDATE `accounts` SET `address`= ?,`gender`= ?,`birthday`= ?,`phone`= ?,`password`= ?,`status`= ?,`name`= ?,`email`= ?,`role_id`= ? WHERE `account_id` = ?';
-        db.query(sql, [data.address, data.gender, data.birthday, data.phone, data.password, data.status, data.name, data.email, data.roleId, accountId], (err, response) => {
-            if (err) throw err
-            res.json({ message: 'Update success!' })
+        let email = req.params.email;
+        let sql = 'UPDATE `accounts` SET `name`= ?,`address`= ?,`phone`= ?,`gender`= ?,`birthday`= ? WHERE `email` = ?';
+        db.query(sql, [data.name, data.address, data.phone, data.gender, data.birthday, email], (err, response) => {
+            if (err) {
+                res.json({ message: false })
+                throw err
+            }
+            res.json({ message: true })
         })
     },
     store: (req, res) => {
@@ -78,6 +80,7 @@ module.exports = {
         let sql = 'INSERT INTO `accounts`(`address`, `gender`, `birthday`, `phone`, `password`, `name`, `email`, `role_id`, `salt`) VALUES (?,?,?,?,?,?,?,?,?)';
         db.query(sql, [data.address, data.gender, data.birthday, data.phone, hashedPasswordObj.passwordHash, data.name, data.email, data.roleId, hashedPasswordObj.salt], (err, response) => {
             if (err) throw err
+            console.log(response.insertId);
             res.json({ message: true })
         })
     },

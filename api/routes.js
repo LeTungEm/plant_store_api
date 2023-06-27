@@ -8,6 +8,7 @@ module.exports = function (app) {
     let plantsController = require('./controllers/PlantsController');
     let toolsController = require('./controllers/ToolsController');
     let colorsController = require('./controllers/ColorsController');
+    let paymentMethodsController = require('./controllers/PaymentMethodsController');
 
     let hashPass = require('./controllers/testHashPass');
     app.route('/hash').get(hashPass.getAll);
@@ -25,7 +26,7 @@ module.exports = function (app) {
         .get(accountsController.isRemember);
     app.route('/accounts/email/exists')
         .post(accountsController.isEmailExists);
-    app.route('/accounts/:accountId')
+    app.route('/accounts/:email')
         .get(accountsController.detail)
         .put(accountsController.update)
         .delete(accountsController.delete);
@@ -65,6 +66,10 @@ module.exports = function (app) {
         .get(colorsController.getUsedByPlants);
     app.route('/colors/used_by_tools')
         .get(colorsController.getUsedByTools);
+
+    // Table PaymentMethods
+    app.route('/payment_methods')
+        .get(paymentMethodsController.getAll);
 
     // Table Plants_categories
     app.route('/plants_categories/:categorySlug')
