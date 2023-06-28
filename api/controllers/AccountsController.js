@@ -56,7 +56,7 @@ module.exports = {
     },
     detail: (req, res) => {
         let email = req.params.email;
-        let sql = 'SELECT name, email, address, phone, gender, birthday FROM accounts WHERE email = ?';
+        let sql = 'SELECT account_id, name, email, address, phone, gender, birthday FROM accounts WHERE email = ?';
         db.query(sql, [email], (err, response) => {
             if (err) throw err
             res.json(response[0])
@@ -80,7 +80,6 @@ module.exports = {
         let sql = 'INSERT INTO `accounts`(`address`, `gender`, `birthday`, `phone`, `password`, `name`, `email`, `role_id`, `salt`) VALUES (?,?,?,?,?,?,?,?,?)';
         db.query(sql, [data.address, data.gender, data.birthday, data.phone, hashedPasswordObj.passwordHash, data.name, data.email, data.roleId, hashedPasswordObj.salt], (err, response) => {
             if (err) throw err
-            console.log(response.insertId);
             res.json({ message: true })
         })
     },

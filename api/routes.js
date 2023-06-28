@@ -9,6 +9,9 @@ module.exports = function (app) {
     let toolsController = require('./controllers/ToolsController');
     let colorsController = require('./controllers/ColorsController');
     let paymentMethodsController = require('./controllers/PaymentMethodsController');
+    let ShippingProvidersController = require('./controllers/ShippingProvidersController');
+    let OrderController = require('./controllers/OrderController');
+    let OrderDetailController = require('./controllers/OrderDetailController');
 
     let hashPass = require('./controllers/testHashPass');
     app.route('/hash').get(hashPass.getAll);
@@ -67,9 +70,21 @@ module.exports = function (app) {
     app.route('/colors/used_by_tools')
         .get(colorsController.getUsedByTools);
 
+    // Table Order
+    app.route('/order')
+        .post(OrderController.store);
+
+    // Table OrderDetail
+    app.route('/order_detail')
+        .post(OrderDetailController.store);
+
     // Table PaymentMethods
     app.route('/payment_methods')
         .get(paymentMethodsController.getAll);
+
+    // Table ShippingProviders
+    app.route('/shipping_providers')
+        .get(ShippingProvidersController.getAll);
 
     // Table Plants_categories
     app.route('/plants_categories/:categorySlug')
